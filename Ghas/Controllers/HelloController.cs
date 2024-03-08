@@ -6,12 +6,12 @@ namespace Ghas.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class HelloController(ILogger<HelloController> Logger) : ControllerBase
+public class HelloController(ILogger<HelloController> logger) : ControllerBase
 {
     [HttpGet]
     public string Get(string name)
     {
-        Logger.LogInformation("Saying hello to {name}", name);
+        logger.LogInformation("Saying hello to {name}", name);
         return $"Hello, {name}!";
     }
 
