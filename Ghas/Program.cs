@@ -1,7 +1,11 @@
+using Ghas.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add IRepository and Repository to the container.
+builder.Services.AddSingleton<IRepository, Repository>();
 
 // Add services to the container.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
