@@ -3,16 +3,16 @@ using Microsoft.Data.SqlClient;
 
 namespace Ghas.Data;
 
-public class Repository : IRepository
+public class Repository(IConfiguration configuration) : IRepository
 {
     public Person? GetPerson(string id)
     {
         using var connection =
-            new SqlConnection("Server=myServerAddress;Database=myDataBase;User Id=myUsername;Password=myPassword;");
+            new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
 
         connection.Open();
         using var command = new SqlCommand(
-            "SELECT * FROM Persons WHERE Id = '" + id + "'",
+            $"SELECT * FROM Persons WHERE Id = '{id}'",
             connection);
 
         using var reader = command.ExecuteReader();
@@ -32,11 +32,11 @@ public class Repository : IRepository
     {
         const string id = "admin";
         using var connection =
-            new SqlConnection("Server=myServerAddress;Database=myDataBase;User Id=myUsername;Password=myPassword;");
+            new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
 
         connection.Open();
         using var command = new SqlCommand(
-            "SELECT * FROM Persons WHERE Id = '" + id + "'",
+            $"SELECT * FROM Persons WHERE Id = '{id}'",
             connection);
 
         using var reader = command.ExecuteReader();
