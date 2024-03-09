@@ -7,4 +7,6 @@ public interface IRepository
     public Person? GetPerson(string id);
 
     public Person GetAdministrator();
+
+    public void SavePerson(Person person);
 }

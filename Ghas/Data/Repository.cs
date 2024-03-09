@@ -20,8 +20,10 @@ public class Repository(IConfiguration configuration) : IRepository
         {
             return new Person
             {
-                Name = reader.GetString(0),
-                Age = reader.GetInt32(1)
+                Id = reader.GetString(0),
+                Name = reader.GetString(1),
+                Age = reader.GetInt32(2),
+                Description = reader.GetString(3)
             };
         }
 
@@ -44,11 +46,27 @@ public class Repository(IConfiguration configuration) : IRepository
         {
             return new Person
             {
-                Name = reader.GetString(0),
-                Age = reader.GetInt32(1)
+                Id = reader.GetString(0),
+                Name = reader.GetString(1),
+                Age = reader.GetInt32(2),
+                Description = reader.GetString(3)
             };
         }
 
         throw new InvalidOperationException("Administrator not found");
+    }
+
+    public void SavePerson(Person person)
+    {
+        using var connection =
+            new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+
+        connection.Open();
+        using var command = new SqlCommand(
+            $"INSERT INTO Persons (Id, Name, Age, Description) " +
+            $"VALUES ('{person.Id}', '{person.Name}', {person.Age}, '{person.Description}')",
+            connection);
+
+        command.ExecuteNonQuery();
     }
 }
