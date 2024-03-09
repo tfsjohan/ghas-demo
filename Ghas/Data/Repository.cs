@@ -62,6 +62,15 @@ public class Repository(IConfiguration configuration) : IRepository
             new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
 
         connection.Open();
+
+        /*
+         * This is clearly a very bad way to insert data into a database.
+         * It is vulnerable to SQL injection attacks.
+         * Yet, CodeQL does not flag this as a security vulnerability.
+         * This is because CodeQL does not have a built-in taint analysis for SQL queries and Asp.net model binding.
+         * However, CodeQL does have a taint analysis for HTTP requests.
+         * This is why CodeQL is able to detect the SQL injection vulnerability in the Ghas/Controllers/PersonController.cs file.
+         */
         using var command = new SqlCommand(
             $"INSERT INTO Persons (Id, Name, Age, Description) " +
             $"VALUES ('{person.Id}', '{person.Name}', {person.Age}, '{person.Description}')",
