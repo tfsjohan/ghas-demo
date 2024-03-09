@@ -56,7 +56,7 @@ public class Repository(IConfiguration configuration) : IRepository
         throw new InvalidOperationException("Administrator not found");
     }
 
-    public void SavePerson(Person person)
+    public Person AddPerson(Person person)
     {
         using var connection =
             new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
@@ -74,6 +74,23 @@ public class Repository(IConfiguration configuration) : IRepository
         using var command = new SqlCommand(
             $"INSERT INTO Persons (Id, Name, Age, Description) " +
             $"VALUES ('{person.Id}', '{person.Name}', {person.Age}, '{person.Description}')",
+            connection);
+
+        command.ExecuteNonQuery();
+
+        return GetPerson(person.Id)!;
+    }
+
+    public void UpdatePerson(Person person)
+    {
+        using var connection =
+            new SqlConnection(configuration.GetConnectionString("DefaultConnection"));
+
+        connection.Open();
+
+        using var command = new SqlCommand(
+            $"UPDATE Persons SET Name = '{person.Name}', Age = {person.Age}, Description = '{person.Description}' " +
+            $"WHERE Id = '{person.Id}'",
             connection);
 
         command.ExecuteNonQuery();

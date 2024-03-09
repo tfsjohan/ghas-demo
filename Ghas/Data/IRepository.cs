@@ -8,5 +8,7 @@ public interface IRepository
 
     public Person GetAdministrator();
 
-    public void SavePerson(Person person);
+    public Person AddPerson(Person person);
+
+    public void UpdatePerson(Person person);
 }
