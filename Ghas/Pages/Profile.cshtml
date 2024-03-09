@@ -1,0 +1,20 @@
+@page "{id}"
+@model Ghas.Pages.Profile
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>@Model.Person?.Name Profile</title>
+</head>
+<body>
+<div>
+    <h1>@Model.Person?.Name</h1>
+    <div>@Html.Raw(Model.Person?.Description)</div>
+</div>
+</body>
+</html>
