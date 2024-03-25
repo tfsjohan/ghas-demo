@@ -89,9 +89,13 @@ public class Repository(IConfiguration configuration) : IRepository
         connection.Open();
 
         using var command = new SqlCommand(
-            $"UPDATE Persons SET Name = '{person.Name}', Age = {person.Age}, Description = '{person.Description}' " +
-            $"WHERE Id = '{person.Id}'",
+            "UPDATE Persons SET Name = @Name, Age = @Age, Description = @Description WHERE Id = @Id",
             connection);
+
+        command.Parameters.AddWithValue("@Name", person.Name);
+        command.Parameters.AddWithValue("@Age", person.Age);
+        command.Parameters.AddWithValue("@Description", person.Description);
+        command.Parameters.AddWithValue("@Id", person.Id);
 
         command.ExecuteNonQuery();
     }
