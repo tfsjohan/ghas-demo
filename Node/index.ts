@@ -3,6 +3,10 @@ import express from "express";
 const app = express();
 const port = 3000;
 
+app.get("/", (req, res) => {
+  res.send(`Hello ${req.query.name}!`);
+});
+
 app.get("/redirect", (req, res) => {
   const url = req.query.url;
 
